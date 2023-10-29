@@ -1,0 +1,3 @@
+C:/Users/Tomás Rodrigues/Desktop/Projeto_AED/cmake-build-debug/CMakeFiles/Projeto_AED.dir
+C:/Users/Tomás Rodrigues/Desktop/Projeto_AED/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Tomás Rodrigues/Desktop/Projeto_AED/cmake-build-debug/CMakeFiles/rebuild_cache.dir
