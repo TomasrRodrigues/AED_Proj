@@ -7,4 +7,6 @@ add_executable(Projeto_AED main.cpp
         Students.cpp
         Students.h
         Classes.cpp
-        Classes.h)
+        Classes.h
+        ClassTimeBlock.cpp
+        ClassTimeBlock.h)
