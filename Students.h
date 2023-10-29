@@ -18,7 +18,7 @@ class Students {
 private:
     std::string StudentName;
     std::string StudentCode;
-    std::vector<Classes> Classes;
+    std::vector<Classes> classes;
 public:
     //Constructors Definition
     Students();
@@ -32,7 +32,7 @@ public:
 
     //Managing functions definition
     void AddClass(Classes newClass);
-    Classes ChangeClass(Classes newClass);
+    bool ChangeClass(Classes newClass);
 
     void RemoveUC(std::string ucCode);
     void addUC(Classes newClass);
