@@ -9,4 +9,6 @@ add_executable(Projeto_AED main.cpp
         Classes.cpp
         Classes.h
         ClassTimeBlock.cpp
-        ClassTimeBlock.h)
+        ClassTimeBlock.h
+        ClassSchedule.cpp
+        ClassSchedule.h)

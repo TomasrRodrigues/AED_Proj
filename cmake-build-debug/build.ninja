@@ -73,6 +73,12 @@ build CMakeFiles/Projeto_AED.dir/ClassTimeBlock.cpp.obj: CXX_COMPILER__Projeto_A
   OBJECT_DIR = CMakeFiles\Projeto_AED.dir
   OBJECT_FILE_DIR = CMakeFiles\Projeto_AED.dir
 
+build CMakeFiles/Projeto_AED.dir/ClassSchedule.cpp.obj: CXX_COMPILER__Projeto_AED_unscanned_Debug C$:/Users/Tomás$ Rodrigues/Desktop/Projeto_AED/ClassSchedule.cpp || cmake_object_order_depends_target_Projeto_AED
+  DEP_FILE = CMakeFiles\Projeto_AED.dir\ClassSchedule.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Projeto_AED.dir
+  OBJECT_FILE_DIR = CMakeFiles\Projeto_AED.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Projeto_AED
@@ -81,7 +87,7 @@ build CMakeFiles/Projeto_AED.dir/ClassTimeBlock.cpp.obj: CXX_COMPILER__Projeto_A
 #############################################
 # Link the executable Projeto_AED.exe
 
-build Projeto_AED.exe: CXX_EXECUTABLE_LINKER__Projeto_AED_Debug CMakeFiles/Projeto_AED.dir/main.cpp.obj CMakeFiles/Projeto_AED.dir/Students.cpp.obj CMakeFiles/Projeto_AED.dir/Classes.cpp.obj CMakeFiles/Projeto_AED.dir/ClassTimeBlock.cpp.obj
+build Projeto_AED.exe: CXX_EXECUTABLE_LINKER__Projeto_AED_Debug CMakeFiles/Projeto_AED.dir/main.cpp.obj CMakeFiles/Projeto_AED.dir/Students.cpp.obj CMakeFiles/Projeto_AED.dir/Classes.cpp.obj CMakeFiles/Projeto_AED.dir/ClassTimeBlock.cpp.obj CMakeFiles/Projeto_AED.dir/ClassSchedule.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Projeto_AED.dir
