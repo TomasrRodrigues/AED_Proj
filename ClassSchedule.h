@@ -15,7 +15,7 @@ class ClassSchedule {
 private:
     Classes classes;
     std::vector<ClassTimeBlock> ClassTime;
-    std::set<Students> Students;
+    std::set<Students> StudentsSet;
 public:
     ClassSchedule();
     ClassSchedule(Classes ucclass);
