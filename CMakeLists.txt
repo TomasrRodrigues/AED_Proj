@@ -15,4 +15,6 @@ add_executable(Projeto_AED main.cpp
         Management.cpp
         Management.h
         Requests.cpp
-        Requests.h)
+        Requests.h
+        Storage.cpp
+        Storage.h)

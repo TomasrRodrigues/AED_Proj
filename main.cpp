@@ -1,5 +1,10 @@
 #include <iostream>
-
+#include "Classes.h"
+#include "ClassSchedule.h"
+#include "ClassTimeBlock.h"
+#include "Management.h"
+#include "Requests.h"
+#include "Students.h"
 
 /*FIRST STEP: DEFINE CLASSES AND UC'S
 SECOND STEP: DEFINE STUDENTS
@@ -15,6 +20,9 @@ FIFTH STEP: ADD NEW FUNCTIONS
 
 */
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    bool loopExit = true;
+    while (loopExit==true){
+        std::cout << "Explicit the request by firstly entering the StudentCode, then the Student"
+    }
     return 0;
 }
