@@ -21,9 +21,9 @@ public:
     void setSchedules();
     void createStudents();
 
-    void searchSchedules(Classes desiredUcClass);
+    unsigned long searchSchedules(Classes desiredUcClass);
     Students findStudent(std::string studentcode);
-    ClassSchedule fincClassSchedule(std::string ucclass);
+    ClassSchedule findClassSchedule(std::string ucclass);
     std::vector<ClassSchedule> ClassesOfUC(std::string ucID);
     std::vector<Students> StudentsOfUC(std::string ucID);
     int GetNumberOfStudentsUc(std::string ucID);
