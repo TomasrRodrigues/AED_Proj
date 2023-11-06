@@ -32,13 +32,17 @@ public:
 
     //Managing functions definition
     void AddClass(Classes newClass);
-    bool ChangeClass(Classes newClass);
+    Classes ChangeClass(Classes newClass);
 
     void RemoveUC(std::string ucCode);
     void addUC(Classes newClass);
 
     bool IsInClass(std::string UCCode);
     Classes FindClass(std::string UCCode);
+
+    bool operator == (Students other) const;
+    bool operator < (Students other) const;
+    bool operator > (Students other) const;
 };
 
 

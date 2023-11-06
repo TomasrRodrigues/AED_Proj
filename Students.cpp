@@ -21,15 +21,15 @@ std::vector<Classes> Students::getClasses(){return classes;}
 //Managing functions
 void Students::AddClass(Classes newClass){classes.push_back(newClass);}
 
-bool Students::ChangeClass(Classes newClass){
+Classes Students::ChangeClass(Classes newClass){
     for (int i=0; i<classes.size(); i++){
         if (classes.at(i).getUCCode()==newClass.getUCCode()){
-            //Classes OldClass=classes.at(i);
+            Classes OldClass=classes.at(i);
             classes.at(i)=newClass;
-            return true;
+            return OldClass;
         }
     }
-    return false;
+    return {};
 }
 
 void Students::RemoveUC(std::string ucCode){
@@ -61,4 +61,17 @@ Classes Students::FindClass(std::string UCCode){
         }
     }
     return {};
+}
+
+
+bool Students::operator==(Students other) const{
+    return this->StudentCode == other.getStudentCode();
+}
+
+bool Students::operator<(Students other) const {
+    return this->StudentCode < other.getStudentCode();
+}
+
+bool Students::operator>(Students other) const {
+    return this->StudentCode > other.getStudentCode();
 }

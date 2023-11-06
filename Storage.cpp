@@ -9,8 +9,8 @@
 
 
 Storage::Storage(){
-    this->allStudents=std::set<Students>();
-    this->allClassSchedules=std::set<ClassSchedule>();
+    this->allStudents = std::set<Students>();
+    this->allClassSchedules = std::vector<ClassSchedule>();
 }
 
 
@@ -24,15 +24,15 @@ void Storage::readFiles(){
 
 
 void Storage::createSchedules(){
-    fstream file("../Excel_DATA/classes_per_uc.csv");
+    std::fstream file("../Excel_DATA/classes_per_uc.csv");
     file.ignore(1000,'\n');
     std::vector<std::string> row;
     std::string line, word;
     while (getline(file, line)){
         if(line[line.size()-1]=='\r')
             line.resize(line.size()-1);
-        row.clear()
-        stringstream str(line);
+        row.clear();
+        std::stringstream str(line);
         while (getline(str, word, ','))
             row.push_back(word);
         Classes Classe(row[0], row[1]);
@@ -44,14 +44,14 @@ void Storage::createSchedules(){
 
 
 void Storage::setSchedules(){
-    fstream file("../Excel_DATA/classes.csv");
+    std::fstream file("../Excel_DATA/classes.csv");
     file.ignore(1000,'\n');
     std::vector<std::string> row;
     std::string line, word;
     while (getline(file, line)){
         if(line[line.size()-1]=='\r')
             line.resize(line.size()-1);
-        stringstream str(line);
+        std::stringstream str(line);
         while (getline(str, word, ','))
             row.push_back(word);
         std::string classid=row[0], ucid=row[1], weekday=row[2], starttime=row[3], duration=row[4], type=row[5];
@@ -59,7 +59,7 @@ void Storage::setSchedules(){
         ClassTimeBlock classtimeblock(weekday, std::stof(starttime), std::stof(duration), type);
         unsigned long scheduleind = searchSchedules(classese);
         if (scheduleind!=-1){
-            schedules[scheduleind].addClassTimeBlock(slot);
+            allClassSchedules[scheduleind].addClassTimeBlock(classtimeblock);
         }
     }
 }
@@ -67,15 +67,15 @@ void Storage::setSchedules(){
 
 
 void Storage::createStudents(){
-    fstream file("../Excel_DATA/students_classes.csv");
+    std::fstream file("../Excel_DATA/students_classes.csv");
     file.ignore(1000,'\n');
     std::vector<std::string> row;
     std::string line, word;
     while (getline(file, line)) {
-        row.clear()
+        row.clear();
         if (line[line.size() - 1] == '\r')
             line.resize(line.size() - 1);
-        stringstream str(line);
+        std::stringstream str(line);
         while (getline(str, word, ','))
             row.push_back(word);
         std::string id= row[0], name= row[1];
@@ -84,18 +84,18 @@ void Storage::createStudents(){
         unsigned long i = searchSchedules(newClass);
         Students students(id, name);
 
-        if(allStudents.find(student)==allStudents.end()){
+        if(allStudents.find(students)==allStudents.end()){
             students.AddClass(this->allClassSchedules[i].getClasses());
-            allStudents.insert(student);
+            allStudents.insert(students);
         }
         else{
-            auto loc = allStudents.find(student);
+            auto loc = allStudents.find(students);
             Students modStudent = *loc;
-            students.erase(loc);
+            allStudents.erase(loc);
             modStudent.AddClass(this->allClassSchedules[i].getClasses());
             allStudents.insert(modStudent);
         }
-        this->allClassSchedules[i].addStudent(student);
+        this->allClassSchedules[i].addStudent(students);
     }
 }
 
@@ -104,7 +104,7 @@ void Storage::createStudents(){
 unsigned long Storage::searchSchedules(Classes desiredUcClass){
     unsigned long left=0, right=allClassSchedules.size()-1, middle=(allClassSchedules.size()-1)/2;
     while (left<=right){
-        if (schedules[middle].getClasses()==desiredUcClass){
+        if (allClassSchedules[middle].getClasses() == desiredUcClass){
             return middle;
         } else if(allClassSchedules[middle].getClasses()<desiredUcClass){
             left=middle+1;
@@ -119,13 +119,13 @@ unsigned long Storage::searchSchedules(Classes desiredUcClass){
 
 
 Students Storage::findStudent(std::string studentcode){
-    auto student = allStudents.find(Student(studentcode, ""));
-    return student = students.end() ? nullptr : const_cast<Student*>(&(*student));
+    auto student = allStudents.find(Students(studentcode, ""));
+    return student = allStudents.end() ? nullptr : const_cast<Students*>(&(*student));
 }
 
 
 
-ClassSchedule Storage::findClassSchedule(std::string ucclass){
+ClassSchedule* Storage::findClassSchedule(Classes ucclass){
     unsigned long index= searchSchedules(ucclass);
     if (index==-1) return nullptr;
     return const_cast<ClassSchedule*>(&allClassSchedules[index]);
@@ -135,8 +135,8 @@ ClassSchedule Storage::findClassSchedule(std::string ucclass){
 
 std::vector<ClassSchedule> Storage::ClassesOfUC(std::string ucID){
     std::vector<ClassSchedule> classese;
-    for (const ClassSchedule &cs : allClassSchedules){
-        if (cs.getClasses().getUcCode() == ucID){
+    for (ClassSchedule cs : allClassSchedules){
+        if (cs.getClasses().getUCCode() == ucID){
             classese.push_back(cs);
         }
     }
@@ -148,20 +148,35 @@ std::vector<ClassSchedule> Storage::ClassesOfUC(std::string ucID){
 std::vector<Students> Storage::StudentsOfUC(std::string ucID){
     std::vector<Students> ucstudents;
     std::vector<ClassSchedule> ucclasses= ClassesOfUC(ucID);
-    for(const ClassSchedule &cs : ucclasses){
-        for(const Student &student : cs.getStudents()){
+    for(ClassSchedule &cs : ucclasses){
+        for(const Students &student : cs.getStudents()){
             ucstudents.push_back(student);
         }
     }
     return ucstudents;
 }
 
+
+
 int Storage::GetNumberOfStudentsUc(std::string ucID){return StudentsOfUC(ucID).size();}
 
 
 
-int Storage::getNumberOfStudentsClass(std::string ucclassCode){return findClassSchedule(ucclassCode)->getStudents().size();}
+int Storage::getNumberOfStudentsClass(Classes ucclass){return findClassSchedule(ucclass)->getStudents().size();}
 
 
 
-Classes Storage::getPreviousClass(Requests request){return request.getStudent().findClass(request.getDesiredClass().getUCCode());}
+Classes Storage::getPreviousClass(Requests request){return request.getStudent().FindClass(request.getDesiredClass().getUCCode());}
+
+
+void Storage::WriteFiles() {
+    std::ofstream file;
+    file.open("../Excel_DATA/students_classes.csv");
+    file << "StudentCode,StudentName,UcCode,ClassCode"<<std::endl;
+    for (Students s: allStudents){
+        for(Classes c : s.getClasses()){
+            file << s.getStudentCode() << "," << s.getStudentName() << "," << c.getUCCode() << "," << c.getClassCode() << std::endl;
+        }
+    }
+    file.close();
+}

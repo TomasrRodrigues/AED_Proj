@@ -13,11 +13,13 @@ private:
     Students student;
     Classes Class;
     std::string Type;
-private:
+public:
     Requests(Students student, Classes desiredClass, std::string type);
     Students getStudent();
     Classes getDesiredClass();
     std::string getType();
+
+
 };
 
 

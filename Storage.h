@@ -12,7 +12,7 @@
 class Storage {
 private:
     std::set<Students> allStudents;
-    std::set<ClassSchedule> allClassSchedules;
+    std::vector<ClassSchedule> allClassSchedules;
 public:
     Storage();
 
@@ -23,12 +23,13 @@ public:
 
     unsigned long searchSchedules(Classes desiredUcClass);
     Students findStudent(std::string studentcode);
-    ClassSchedule findClassSchedule(std::string ucclass);
+    ClassSchedule* findClassSchedule(Classes ucclass);
     std::vector<ClassSchedule> ClassesOfUC(std::string ucID);
     std::vector<Students> StudentsOfUC(std::string ucID);
     int GetNumberOfStudentsUc(std::string ucID);
-    int getNumberOfStudentsClass(std::string ucclassCode);
+    int getNumberOfStudentsClass(Classes ucclass);
     Classes getPreviousClass(Requests request);
+    void WriteFiles();
 
 
 };
