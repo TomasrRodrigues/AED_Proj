@@ -22,27 +22,29 @@ private:
 public:
     //Constructors Definition
     Students();
-    Students(std::string studentCode, std::string studentName);
+
+    Students(const std::string &studentCode, const std::string &studentName);
 
     //Getters Definition
-    std::string getStudentName();
-    std::string getStudentCode();
-    std::vector<Classes> getClasses();
+    std::string getStudentName() const;
+    std::string getStudentCode() const;
+    std::vector<Classes> getClasses() const;
 
 
     //Managing functions definition
-    void AddClass(Classes newClass);
-    Classes ChangeClass(Classes newClass);
+    void AddClass(const Classes &newClass);
+    Classes ChangeClass(const Classes &newClass);
 
-    void RemoveUC(std::string ucCode);
-    void addUC(Classes newClass);
+    void RemoveUC(const std::string &ucCode);
+    void addUC(const Classes &newClass);
 
-    bool IsInClass(std::string UCCode);
-    Classes FindClass(std::string UCCode);
+    bool IsInClass(const std::string &UCCode) const;
+    Classes FindClass(const std::string &UCCode) const;
 
-    bool operator == (Students other) const;
-    bool operator < (Students other) const;
-    bool operator > (Students other) const;
+    bool operator == (const Students &other) const;
+    bool operator < (const Students &other) const;
+    bool operator > (const Students &other) const;
+
 };
 
 

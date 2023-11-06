@@ -18,20 +18,24 @@ private:
     std::set<Students> StudentsSet;
 public:
     ClassSchedule();
-    ClassSchedule(Classes ucclass);
-    ClassSchedule(std::string ucCode, std::string classCode);
+
+    ClassSchedule(const Classes &ucclass);
+    ClassSchedule(const std::string &ucCode,const std::string &classCode);
 
 
-    Classes getClasses();
-    std::vector<ClassTimeBlock> getClassTime();
-    std::set<Students> getStudents();
-    int getStudentsNumber();
+    Classes getClasses() const;
+    const std::vector<ClassTimeBlock> &getClassTime() const;
+    std::set<Students> getStudents() const;
+    int getStudentsNumber() const;
 
 
-    void addClassTimeBlock(ClassTimeBlock classtimeblock);
-    void addStudent(Students student);
-    void removeStudent(Students student);
-    bool sameUcId(ClassSchedule other);
+    void addClassTimeBlock(const ClassTimeBlock &classtimeblock);
+    void addStudent(const Students &student);
+    void removeStudent(const Students &student);
+    bool sameUcId(const ClassSchedule &other) const;
+
+    bool operator < (const ClassSchedule &other) const;
+    bool operator == (const ClassSchedule &other) const;
 };
 
 

@@ -9,19 +9,20 @@
 
 //Constructors definition
 Students::Students(){StudentCode=""; StudentName=""; classes=std::vector<Classes>();}
-Students::Students(std::string studentCode, std::string studentName){StudentCode=studentCode; StudentName=studentName; classes=std::vector<Classes>();}
+
+Students::Students(const std::string &studentCode,const std::string &studentName){StudentCode=studentCode; StudentName=studentName; classes=std::vector<Classes>();}
 
 
 //Getters Definition
-std::string Students::getStudentName(){return StudentName;}
-std::string Students::getStudentCode(){return StudentCode;}
-std::vector<Classes> Students::getClasses(){return classes;}
+std::string Students::getStudentName() const {return StudentName;}
+std::string Students::getStudentCode() const {return StudentCode;}
+std::vector<Classes> Students::getClasses() const{return classes;}
 
 
 //Managing functions
-void Students::AddClass(Classes newClass){classes.push_back(newClass);}
+void Students::AddClass(const Classes &newClass){classes.push_back(newClass);}
 
-Classes Students::ChangeClass(Classes newClass){
+Classes Students::ChangeClass(const Classes &newClass){
     for (int i=0; i<classes.size(); i++){
         if (classes.at(i).getUCCode()==newClass.getUCCode()){
             Classes OldClass=classes.at(i);
@@ -32,7 +33,9 @@ Classes Students::ChangeClass(Classes newClass){
     return {};
 }
 
-void Students::RemoveUC(std::string ucCode){
+
+void Students::RemoveUC(const std::string &ucCode){
+
     for(int i=0; i<classes.size(); i++){
         if(classes.at(i).getUCCode()==ucCode){
             classes.erase(classes.begin() + i);
@@ -42,9 +45,10 @@ void Students::RemoveUC(std::string ucCode){
 }
 
 
-void Students::addUC(Classes newClass){classes.push_back(newClass); std::sort(classes.begin(), classes.end());}
 
-bool Students::IsInClass(std::string UCCode){
+void Students::addUC(const Classes &newClass){classes.push_back(newClass); std::sort(classes.begin(), classes.end());}
+
+bool Students::IsInClass(const std::string &UCCode) const{
     for (int i=0; i<classes.size(); i++){
         if(classes.at(i).getUCCode()==UCCode){
             return true;
@@ -54,7 +58,9 @@ bool Students::IsInClass(std::string UCCode){
 }
 
 
-Classes Students::FindClass(std::string UCCode){
+
+Classes Students::FindClass(const std::string &UCCode) const{
+
     for (Classes i : classes){
         if (i.getUCCode()==UCCode){
             return i;
@@ -64,14 +70,16 @@ Classes Students::FindClass(std::string UCCode){
 }
 
 
-bool Students::operator==(Students other) const{
+
+bool Students::operator==(const Students &other) const{
     return this->StudentCode == other.getStudentCode();
 }
 
-bool Students::operator<(Students other) const {
+bool Students::operator<(const Students &other) const {
     return this->StudentCode < other.getStudentCode();
 }
 
-bool Students::operator>(Students other) const {
+bool Students::operator>(const Students &other) const {
+
     return this->StudentCode > other.getStudentCode();
 }

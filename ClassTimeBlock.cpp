@@ -4,6 +4,9 @@
 
 #include "ClassTimeBlock.h"
 
+#include <map>
+
+
 
 ClassTimeBlock::ClassTimeBlock(){
     WeekDay="";
@@ -13,7 +16,9 @@ ClassTimeBlock::ClassTimeBlock(){
     Type="";
 }
 
-ClassTimeBlock::ClassTimeBlock(std::string weekday, float starttime, float duration, std::string type){
+
+ClassTimeBlock::ClassTimeBlock(const std::string weekday,const float starttime,const float duration,const std::string type){
+
     WeekDay=weekday;
     StartTime=starttime;
     EndTime=starttime+duration;
@@ -23,11 +28,13 @@ ClassTimeBlock::ClassTimeBlock(std::string weekday, float starttime, float durat
 
 
 
-std::string ClassTimeBlock::getWeekDay(){return WeekDay;}
-float ClassTimeBlock::getStartTime(){return StartTime;}
-float ClassTimeBlock::getDuration(){return Duration;}
-float ClassTimeBlock::getEndTime(){return EndTime;}
-std::string ClassTimeBlock::getType(){return Type;}
+
+std::string ClassTimeBlock::getWeekDay() const{return WeekDay;}
+float ClassTimeBlock::getStartTime() const{return StartTime;}
+float ClassTimeBlock::getDuration() const{return Duration;}
+float ClassTimeBlock::getEndTime() const{return EndTime;}
+std::string ClassTimeBlock::getType() const{return Type;}
+
 
 
 bool ClassTimeBlock::Overlapping(ClassTimeBlock other){
@@ -35,4 +42,32 @@ bool ClassTimeBlock::Overlapping(ClassTimeBlock other){
     else if (this->StartTime >= other.getStartTime() || this->EndTime <= other.getStartTime()){return false;}
     else if (this->Type=="T" || other.getType()=="T"){return false;}
     return true;
+
+}
+
+bool ClassTimeBlock::operator!=(const ClassTimeBlock &other) const {
+    return this->WeekDay != other.getWeekDay() && this->StartTime != other.getStartTime() && this->EndTime != other.getEndTime() && this->Type != other.getType();
+}
+
+
+
+bool ClassTimeBlock::operator==(const ClassTimeBlock &other) const {
+    return this->WeekDay==other.getWeekDay() && this->StartTime == other.getStartTime() && this->EndTime == other.getEndTime() && this->Type == other.getType();
+}
+
+
+
+bool ClassTimeBlock::operator<(const ClassTimeBlock &other) const {
+    if(this->WeekDay != other.getWeekDay()) {
+        std::map <std::string, int> days = {{"Monday", 1}, {"Tuesday", 2}, {"Wednesday", 3}, {"Thursday", 4}, {"Friday", 5}, {"Saturday", 6}, {"Sunday", 7}};
+        return days[WeekDay] < days[other.getWeekDay()];
+    }
+
+    if(this->StartTime == other.getStartTime()){
+        if(this->EndTime == other.getEndTime()){
+            return this->Type < other.getType();
+        }
+        return this->EndTime < other.getEndTime();
+    }
+    return this->StartTime < other.getStartTime();
 }

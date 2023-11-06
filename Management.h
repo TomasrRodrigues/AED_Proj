@@ -29,12 +29,16 @@ public:
     void ChangeRequest(Requests request, Storage storage);
     void RemoveRequest(Requests request, Storage storage);
     void EnrollmentRequest(Requests request, Storage storage);
-    //void processRequest();
+
+    void processRequest(Storage storage);
+
     //void WriteFiles();
     void printSuccessfulRequests();
     void printRejectedRequests();
 
-    void printStudentSchedule(std::string studentid, Storage storage);
+
+    void printStudentSchedule(const std::string studentid, Storage storage) const;
+
 
     /*
     void printClassSchedule(std::string classid, Storage storage);

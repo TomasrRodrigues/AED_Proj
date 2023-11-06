@@ -101,7 +101,7 @@ void Storage::createStudents(){
 
 
 
-unsigned long Storage::searchSchedules(Classes desiredUcClass){
+unsigned long Storage::searchSchedules(const Classes &desiredUcClass) const{
     unsigned long left=0, right=allClassSchedules.size()-1, middle=(allClassSchedules.size()-1)/2;
     while (left<=right){
         if (allClassSchedules[middle].getClasses() == desiredUcClass){
@@ -118,14 +118,20 @@ unsigned long Storage::searchSchedules(Classes desiredUcClass){
 
 
 
-Students Storage::findStudent(std::string studentcode){
+
+Students* Storage::findStudent(const std::string &studentcode) const{
     auto student = allStudents.find(Students(studentcode, ""));
-    return student = allStudents.end() ? nullptr : const_cast<Students*>(&(*student));
+    if (student == allStudents.end()) {
+        return nullptr;
+    } else {
+        return const_cast<Students*>(&(*student));
+    }
 }
 
 
 
-ClassSchedule* Storage::findClassSchedule(Classes ucclass){
+
+ClassSchedule* Storage::findClassSchedule(const Classes &ucclass) const{
     unsigned long index= searchSchedules(ucclass);
     if (index==-1) return nullptr;
     return const_cast<ClassSchedule*>(&allClassSchedules[index]);
@@ -133,7 +139,8 @@ ClassSchedule* Storage::findClassSchedule(Classes ucclass){
 
 
 
-std::vector<ClassSchedule> Storage::ClassesOfUC(std::string ucID){
+
+std::vector<ClassSchedule> Storage::ClassesOfUC(const std::string &ucID) const{
     std::vector<ClassSchedule> classese;
     for (ClassSchedule cs : allClassSchedules){
         if (cs.getClasses().getUCCode() == ucID){
@@ -145,7 +152,8 @@ std::vector<ClassSchedule> Storage::ClassesOfUC(std::string ucID){
 
 
 
-std::vector<Students> Storage::StudentsOfUC(std::string ucID){
+
+std::vector<Students> Storage::StudentsOfUC(const std::string &ucID) const{
     std::vector<Students> ucstudents;
     std::vector<ClassSchedule> ucclasses= ClassesOfUC(ucID);
     for(ClassSchedule &cs : ucclasses){
@@ -158,15 +166,16 @@ std::vector<Students> Storage::StudentsOfUC(std::string ucID){
 
 
 
-int Storage::GetNumberOfStudentsUc(std::string ucID){return StudentsOfUC(ucID).size();}
+
+int Storage::GetNumberOfStudentsUc(const std::string &ucID) const{return StudentsOfUC(ucID).size();}
 
 
 
-int Storage::getNumberOfStudentsClass(Classes ucclass){return findClassSchedule(ucclass)->getStudents().size();}
+int Storage::getNumberOfStudentsClass(const Classes &ucclass) const{return findClassSchedule(ucclass)->getStudents().size();}
 
 
 
-Classes Storage::getPreviousClass(Requests request){return request.getStudent().FindClass(request.getDesiredClass().getUCCode());}
+Classes Storage::getPreviousClass(const Requests &request) const{return request.getStudent().FindClass(request.getDesiredClass().getUCCode());}
 
 
 void Storage::WriteFiles() {

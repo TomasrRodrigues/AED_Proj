@@ -7,11 +7,31 @@
 
 //Constructors Definition
 Classes::Classes(){this->UCCode=""; this->ClassCode="";}
-Classes::Classes(std::string uccode, std::string classcode){this->UCCode=uccode; this->ClassCode=classcode;}
+
+Classes::Classes(const std::string &uccode, const std::string &classcode){this->UCCode=uccode; this->ClassCode=classcode;}
 
 //Getters Definition
-std::string Classes::getUCCode(){return UCCode;}
-std::string Classes::getClassCode(){return ClassCode;}
+std::string Classes::getUCCode() const{return UCCode;}
+std::string Classes::getClassCode() const{return ClassCode;}
 
+//std::string Classes::UCCodetoString() const {}
 //Other functions
-bool Classes::SameUC(Classes otherClass){return this->UCCode==otherClass.UCCode;}
+bool Classes::SameUC(const Classes &otherClass) const{return this->UCCode==otherClass.UCCode;}
+
+bool Classes::operator == (const Classes &other) const {
+    return this->UCCode == other.UCCode && this->ClassCode == other.ClassCode;
+}
+
+
+
+bool Classes::operator < (const Classes &other) const {
+    if(this->UCCode == other.UCCode) return this->ClassCode < other.ClassCode;
+    return this->UCCode < other.UCCode;
+}
+
+
+
+bool Classes::operator > (const Classes &other) const {
+    if(this->UCCode == other.UCCode) return this->ClassCode > other.ClassCode;
+    return this->UCCode > other.UCCode;
+}

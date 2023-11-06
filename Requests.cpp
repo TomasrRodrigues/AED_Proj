@@ -4,12 +4,14 @@
 
 #include "Requests.h"
 
-Requests::Requests(Students studente, Classes desiredclass, std::string type){
+
+Requests::Requests(const Students &student,const Classes &desiredClass,const std::string &type){
     if (type!= "Change" && type!="Remove" && type!="Enrollment") return;
-    this->student= studente;
-    this->Class=desiredclass;
+    this->student= student;
+    this->Classe = desiredClass;
     this->Type= type;
 }
-Students Requests::getStudent(){return student;};
-Classes Requests::getDesiredClass(){return Class;};
-std::string Requests::getType(){return Type;};
+
+Students Requests::getStudent() const {return student;};
+Classes Requests::getDesiredClass() const {return Classe;};
+std::string Requests::getType() const {return Type;};

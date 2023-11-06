@@ -11,13 +11,13 @@
 class Requests {
 private:
     Students student;
-    Classes Class;
+    Classes Classe;
     std::string Type;
 public:
-    Requests(Students student, Classes desiredClass, std::string type);
-    Students getStudent();
-    Classes getDesiredClass();
-    std::string getType();
+    Requests(const Students &student,const Classes &desiredClass,const std::string &type);
+    Students getStudent() const;
+    Classes getDesiredClass() const;
+    std::string getType() const;
 
 
 };

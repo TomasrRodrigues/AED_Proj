@@ -21,14 +21,15 @@ public:
     void setSchedules();
     void createStudents();
 
-    unsigned long searchSchedules(Classes desiredUcClass);
-    Students findStudent(std::string studentcode);
-    ClassSchedule* findClassSchedule(Classes ucclass);
-    std::vector<ClassSchedule> ClassesOfUC(std::string ucID);
-    std::vector<Students> StudentsOfUC(std::string ucID);
-    int GetNumberOfStudentsUc(std::string ucID);
-    int getNumberOfStudentsClass(Classes ucclass);
-    Classes getPreviousClass(Requests request);
+
+    unsigned long searchSchedules(const Classes &desiredUcClass) const;
+    Students* findStudent(const std::string &studentcode) const;
+    ClassSchedule* findClassSchedule(const Classes &ucclass) const;
+    std::vector<ClassSchedule> ClassesOfUC(const std::string &ucID) const;
+    std::vector<Students> StudentsOfUC(const std::string &ucID) const;
+    int GetNumberOfStudentsUc(const std::string &ucID) const;
+    int getNumberOfStudentsClass(const Classes &ucclass) const;
+    Classes getPreviousClass(const Requests &request) const;
     void WriteFiles();
 
 

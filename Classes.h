@@ -17,15 +17,20 @@ private:
 public:
     //Constructors definition
     Classes();
-    Classes(std::string uccode, std::string classcode);
+
+    Classes(const std::string &uccode, const std::string &classcode);
 
     //Getters
-    std::string getUCCode();
-    std::string getClassCode();
+    std::string getUCCode() const;
+    std::string getClassCode() const;
+    //std::string UCCodetoString() const;
 
     //verify equality between UC's
-    bool SameUC(Classes otherClass);
+    bool SameUC(const Classes &otherClass) const;
 
+    bool operator ==( const Classes &other) const;
+    bool operator < (const Classes &other) const;
+    bool operator > (const Classes &other) const;
 };
 
 

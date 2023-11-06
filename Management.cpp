@@ -64,21 +64,21 @@ void Management::ChangeRequest(Requests request, Storage storage){
     else if (requestExceedsCap(request, storage)){rejectedRequests.emplace_back(request, "Cap Exceeded");}
     else if (requestDisequilibrium(request, storage)){rejectedRequests.emplace_back(request, "Classes Disequilibrium");}
     else{
-        Students student = storage.findStudent(request.getStudent().getStudentCode());
+        Students* student = storage.findStudent(request.getStudent().getStudentCode());
         Classes classese = storage.findClassSchedule(request.getDesiredClass())->getClasses();
-        Classes oldclass = student.ChangeClass(classese);
-        storage.findClassSchedule(request.getDesiredClass())->addStudent(student);
-        storage.findClassSchedule(oldclass)->removeStudent(student);
+        Classes oldclass = student->ChangeClass(classese);
+        storage.findClassSchedule(request.getDesiredClass())->addStudent(*student);
+        storage.findClassSchedule(oldclass)->removeStudent(*student);
         successfulChanges.push_back(request);
     }
 }
 
 
 void Management::RemoveRequest(Requests request, Storage storage){
-    Students student=storage.findStudent(request.getStudent().getStudentCode());
+    Students* student=storage.findStudent(request.getStudent().getStudentCode());
     Classes classese = storage.findClassSchedule(request.getDesiredClass())->getClasses();
-    student.RemoveUC(classese.getUCCode());
-    storage.findClassSchedule(classese)->removeStudent(student);
+    student->RemoveUC(classese.getUCCode());
+    storage.findClassSchedule(classese)->removeStudent(*student);
     successfulChanges.push_back(request);
 }
 
@@ -87,10 +87,10 @@ void Management::EnrollmentRequest(Requests request, Storage storage){
     if (requestCollision(request, storage)){rejectedRequests.emplace_back(request, "Schedule collision");}
     else if (requestExceedsCap(request, storage)){rejectedRequests.emplace_back(request, "Cap Exceeded. Choose another class");}
     else{
-        Students student = storage.findStudent(request.getStudent().getStudentCode());
+        Students* student = storage.findStudent(request.getStudent().getStudentCode());
         Classes classes = storage.findClassSchedule(request.getDesiredClass())->getClasses();
-        student.addUC(classes);
-        storage.findClassSchedule(classes)->addStudent(student);
+        student->addUC(classes);
+        storage.findClassSchedule(classes)->addStudent(*student);
         successfulChanges.push_back(request);
     }
 }
@@ -141,7 +141,8 @@ std::string decimalToHours(int decimal){
 
 
 
-std::string ucIdToString(std::string ucID){
+
+std::string ucIdToString(const std::string ucID){
     std::map<std::string, std::string> name = {{"L.EIC001", "ALGA"}, {"L.EIC002", "AM I"}, {"L.EIC003", "FP"}, {"L.EIC004", "FSC"}, {"L.EIC005", "MD"}, {"L.EIC011", "AED"}, {"L.EIC012", "BD"}, {"L.EIC013", "F II"}, {"L.EIC014", "LDTS"}, {"L.EIC015", "SO"}, {"L.EIC021", "FSI"}, {"L.EIC022", "IPC"}, {"L.EIC023", "LBAW"}, {"L.EIC024", "PFL"}, {"L.EIC025", "RC"}};
     return name[ucID];
 }
@@ -149,7 +150,7 @@ std::string ucIdToString(std::string ucID){
 
 
 struct compareDayWeek{
-    bool operator()(std::string d1, std::string d2){
+    bool operator()(const std::string d1, const std::string d2) const{
         std::map<std::string,int> days = {{"Monday", 1}, {"Tuesday", 2}, {"Wednesday", 3}, {"Thursday", 4}, {"Friday", 5}, {"Saturday", 6}, {"Sunday", 7}};
         return days[d1] < days[d2];
     }
@@ -157,19 +158,21 @@ struct compareDayWeek{
 
 
 
-void Management::printStudentSchedule(std::string studentid, Storage storage){
-    Students student = storage.findStudent(studentid);
+
+void Management::printStudentSchedule(const std::string studentid, Storage storage) const{
+    Students* student = storage.findStudent(studentid);
     if (student == nullptr){
         std::cout << "Student not found!" << std::endl;
         return;
     }
 
     std::map<std::string, std::map<ClassTimeBlock, std::vector<std::string>>, compareDayWeek> weekdayClassTimeBlock;
-    std::vector<Classes> studentClasses = student.getClasses();
 
-    for (Classes classes : studentClasses){
+    std::vector<Classes> studentClasses = student->getClasses();
+
+    for (const Classes &classes : studentClasses){
         ClassSchedule *cs = storage.findClassSchedule(classes);
-        for(ClassTimeBlock &ctb: cs->getClassTime()){
+        for(const ClassTimeBlock &ctb: cs->getClassTime()){
             weekdayClassTimeBlock[ctb.getWeekDay()][ctb].push_back(classes.getUCCode());
         }
     }
@@ -188,6 +191,29 @@ void Management::printStudentSchedule(std::string studentid, Storage storage){
         }
     }
 }
+
+
+void Management::processRequest(Storage storage){
+
+    while(!pendingRequests.empty()){
+        Requests request=pendingRequests.front();
+        if (request.getType()=="Change"){
+            ChangeRequest(request, storage);
+        }
+        else if (request.getType()=="Remove"){
+            RemoveRequest(request, storage);
+        }
+        else if (request.getType()=="Enrollment"){
+            EnrollmentRequest(request, storage);
+        }
+        else{
+            printStudentSchedule(request.getStudent().getStudentCode(), storage);
+        }
+        pendingRequests.pop();
+    }
+}
+
+
 
 /*
 void Management::printClassSchedule(std::string classid, Storage storage){

@@ -17,14 +17,19 @@ private:
     std::string Type;
 public:
     ClassTimeBlock();
-    ClassTimeBlock(std::string weekday, float starttime, float duration, std::string type);
-    std::string getWeekDay();
-    float getStartTime();
-    float getDuration();
-    float getEndTime();
-    std::string getType();
+
+    ClassTimeBlock(const std::string weekday, const float starttime, const float duration, const std::string type);
+    std::string getWeekDay() const;
+    float getStartTime() const;
+    float getDuration() const;
+    float getEndTime() const;
+    std::string getType() const;
 
     bool Overlapping(ClassTimeBlock other);
+
+    bool operator !=(const ClassTimeBlock &other) const;
+    bool operator ==(const ClassTimeBlock &other) const;
+    bool operator < (const ClassTimeBlock &other) const;
 };
 
 
